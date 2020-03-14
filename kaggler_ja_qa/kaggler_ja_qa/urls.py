@@ -17,8 +17,10 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.urls import path
 from faq.urls import router as faq_router
+from rest_framework.documentation import include_docs_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^api/', include(faq_router.urls)),
+    path('docs/', include_docs_urls(title='kaggler-ja QA'))
 ]

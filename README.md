@@ -6,6 +6,8 @@
 python3 -m venv env
 source env/bin/activate
 pip install django djangorestframework django-filter
+pip install coreapi
+pip install Pygments Markdown
 ```
 
 ## Create project and app
