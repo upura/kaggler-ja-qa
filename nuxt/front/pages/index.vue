@@ -23,6 +23,11 @@
         >
           GitHub
         </a>
+        <div v-for="d in dat.results" :key=d.q_text align="center">
+          <h2>
+            {{d.q_text}} {{d.q_author.name}} 
+          </h2>
+        </div>
       </div>
     </div>
   </div>
@@ -34,7 +39,20 @@ import Logo from '~/components/Logo.vue'
 export default {
   components: {
     Logo
+  },
+
+  //ここから追記
+  data() {
+    return {
+      dat: []
+    }
+  },
+  async mounted(){
+    const url = "/api/qa/" 
+    const response = await this.$axios.get(url)
+    this.dat = response.data
   }
+  //ここまで追記
 }
 </script>
 

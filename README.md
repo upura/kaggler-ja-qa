@@ -1,12 +1,19 @@
 # kaggler-ja-qa
 
-## install
+## Django
 
 ```
 docker-compose up -d --build
 ```
-
 http://localhost:8000/admin
+
+## Nust.js
+```
+docker exec -it nuxt /bin/bash
+cd front
+yarn dev
+```
+http://localhost:3000/
 
 ## ref
 - [Django REST Frameworkを使って爆速でAPIを実装する](https://qiita.com/kimihiro_n/items/86e0a9e619720e57ecd8)
