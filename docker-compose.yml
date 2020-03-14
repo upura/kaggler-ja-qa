@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  web:
+    container_name: django
+    build: ./dockerfiles/django_docker
+    command:
+      python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./django:/code
+    ports:
+      - "8000:8000"
+
+  front:
+    container_name: nuxt
+    build: ./dockerfiles/nuxt_docker 
+    tty: true
+    volumes:
+      - ./nuxt:/code
+    ports:
+      - "3000:3000"
