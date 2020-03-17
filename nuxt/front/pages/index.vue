@@ -1,90 +1,144 @@
 <template>
-  <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        front
-      </h1>
-      <h2 class="subtitle">
-        kaggler-ja qa
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-        <div v-for="d in dat.results" :key=d.q_text align="center">
-          <h2>
-            {{d.q_text}} {{d.q_author.name}} 
-          </h2>
-        </div>
-      </div>
+  <v-app id="app">
+    <div id="form">
+      <v-container fluid>
+        <v-row justify="center">
+          <v-col>
+            <v-card>
+              <v-app-bar color="primary" dark>
+                <v-toolbar-title>kaggler-ja QA</v-toolbar-title>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-btn color="pink" dark small absolute bottom right fab to="/create" v-on="on">+</v-btn>
+                  </template>
+                  <span>Add new QA</span>
+                </v-tooltip>
+              </v-app-bar>
+              <v-form ref="listForm" lazy-validation>
+                <v-container fluid class="pa-1">
+                  <v-row class="px-2">
+                    <v-col cols="6" class="pa-1">
+                      <v-text-field
+                        clearable
+                        label="検索"
+                        name="search"
+                        maxlength="64"
+                        v-model="model.q_text"
+                        @change="loadList"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="3" class="pa-1">
+                      <v-select
+                        label="種別"
+                        name="type"
+                        item-text="label"
+                        item-value="value"
+                        :items="[
+                          { label: '-', value: null },
+                          { label: '前処理', value: 0 },
+                          { label: '特徴量エンジニアリング', value: 1 },
+                          { label: 'モデリング', value: 2 },
+                        ]"
+                        v-model="model.type"
+                        @change="loadList"
+                      ></v-select>
+                    </v-col>
+                  </v-row>
+                </v-container>
+                <v-data-table
+                  :headers="headers"
+                  :items="items"
+                  :options.sync="options"
+                  :server-items-length="total"
+                  :footer-props="{
+                    'items-per-page-options': [10, 20, 50, 100, 200, 300, 400, 500],
+                    showFirstLastPage: true,
+                  }"
+                  :loading="loading"
+                  multi-sort
+                  locale="ja-jp"
+                  loading-text="読込中"
+                  no-data-text="データがありません。"
+                  class="elevation-1"
+                >
+                  <template v-slot:item.label="{ item }">
+                    {{ selectionItems.label[item.label] }}
+                  </template>
+                  <template v-slot:item.q_text="{ item }">
+                    {{ item.q_text }}
+                  </template>
+                  <template v-slot:item.q_posted_at="{ item }">
+                    {{ item.q_posted_at.replace('T', ' ').replace(/-/g, '/') }}
+                  </template>
+                  <template v-slot:item.label="{ item }">
+                    {{ item.label }}
+                  </template>
+                </v-data-table>
+              </v-form>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
     </div>
-  </div>
+  </v-app>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-
+import Axios from 'axios'
 export default {
-  components: {
-    Logo
+  data: () => ({
+    loading: false,
+    headers: [
+      { text: '質問文', align: 'center', sortable: false, value: 'q_text' },
+      { text: '質問日時', align: 'center', sortable: false, value: 'q_posted_at' },
+      { text: '種別', align: 'center', sortable: false, value: 'label' },
+    ],
+    options: {
+      page: 1,
+      itemsPerPage: 20,
+      sortBy: ['q_posted_at'],
+      sortDesc: [false],
+    },
+    items: [],
+    total: 0,
+    selectionItems: {
+      label: ['前処理', '特徴量エンジニアリング', 'モデリング'],
+    },
+    model: {
+      'title': '',
+    },
+  }),
+  watch: {
+    options: {
+      handler() {
+        this.loadList()
+      },
+      deep: true,
+    },
   },
-
-  //ここから追記
-  data() {
-    return {
-      dat: []
-    }
+  methods: {
+    async loadList() {
+      this.loading = true
+      try {
+        const res = await this.$axios.get(
+          '/api/qa/',
+          Object.assign(this.model, {
+            offset: (this.options.page - 1) * this.options.itemsPerPage,
+            limit: this.options.itemsPerPage
+          })
+        )
+        if (res.data) {
+          this.items = res.data.results
+          this.total = res.data.count
+        }
+      } catch (error) {
+        alert('情報を取得できませんでした。時間をおいてやり直してください。')
+      }
+      this.loading = false
+    },
   },
-  async mounted(){
-    const url = "/api/qa/" 
-    const response = await this.$axios.get(url)
-    this.dat = response.data
-  }
-  //ここまで追記
+  created: function() {
+    this.loadList()
+  },
 }
 </script>
-
-<style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
-</style>
