@@ -22,8 +22,9 @@
                         clearable
                         label="検索"
                         name="search"
+                        append-icon="mdi-magnify"
                         maxlength="64"
-                        v-model="model.q_text"
+                        v-model="search"
                         @change="loadList"
                       ></v-text-field>
                     </v-col>
@@ -48,6 +49,7 @@
                 <v-data-table
                   :headers="headers"
                   :items="items"
+                  :search="search"
                   :options.sync="options"
                   :server-items-length="total"
                   :footer-props="{
@@ -55,20 +57,16 @@
                     showFirstLastPage: true,
                   }"
                   :loading="loading"
-                  multi-sort
                   locale="ja-jp"
                   loading-text="読込中"
                   no-data-text="データがありません。"
                   class="elevation-1"
                 >
-                  <template v-slot:item.label="{ item }">
-                    {{ selectionItems.label[item.label] }}
-                  </template>
                   <template v-slot:item.q_text="{ item }">
-                    {{ item.q_text }}
+                    {{ item.q_text.slice(0, 90) + '......' }}
                   </template>
                   <template v-slot:item.q_posted_at="{ item }">
-                    {{ item.q_posted_at.replace('T', ' ').replace(/-/g, '/') }}
+                    {{ item.q_posted_at.replace('T', ' ').replace(/-/g, '/').slice(0, -4) }}
                   </template>
                   <template v-slot:item.label="{ item }">
                     {{ item.label }}
@@ -89,9 +87,9 @@ export default {
   data: () => ({
     loading: false,
     headers: [
-      { text: '質問文', align: 'center', sortable: false, value: 'q_text' },
-      { text: '質問日時', align: 'center', sortable: false, value: 'q_posted_at' },
-      { text: '種別', align: 'center', sortable: false, value: 'label' },
+      { text: '質問文', align: 'left', sortable: false, value: 'q_text' },
+      { text: '質問日時', align: 'left', sortable: false, value: 'q_posted_at' },
+      { text: '種別', align: 'left', sortable: false, value: 'label' },
     ],
     options: {
       page: 1,
