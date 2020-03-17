@@ -46,6 +46,7 @@ export default {
   */
   modules: [
     '@nuxtjs/axios',
+    '@nuxtjs/vuetify',
   ],
   axios: {
     baseURL: "http://localhost:8000"
