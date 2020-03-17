@@ -7,6 +7,13 @@ docker-compose up -d --build
 ```
 http://localhost:8000/admin
 
+### DB settings
+
+```
+docker-compose run web ./manage.py makemigrations
+docker-compose run web ./manage.py migrate
+```
+
 ## Nust.js
 ```
 docker exec -it nuxt /bin/bash

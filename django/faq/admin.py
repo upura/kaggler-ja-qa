@@ -1,12 +1,7 @@
 from django.contrib import admin
-from .models import User, QuestionAnswer
-
-
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    pass
+from .models import QuestionAnswer
 
 
 @admin.register(QuestionAnswer)
-class Entry(admin.ModelAdmin):
+class QuestionAnswer(admin.ModelAdmin):
     pass
