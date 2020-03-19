@@ -21,17 +21,17 @@
                       <v-text-field
                         clearable
                         label="検索"
-                        name="search"
-                        append-icon="mdi-magnify"
+                        name="q_text"
+                        prepend-inner-icon="mdi-magnify"
                         maxlength="64"
-                        v-model="search"
+                        v-model="model.q_text"
                         @change="loadList"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="3" class="pa-1">
                       <v-select
                         label="種別"
-                        name="type"
+                        name="label"
                         item-text="label"
                         item-value="value"
                         :items="[
@@ -40,7 +40,7 @@
                           { label: '特徴量エンジニアリング', value: 1 },
                           { label: 'モデリング', value: 2 },
                         ]"
-                        v-model="model.type"
+                        v-model="model.label"
                         @change="loadList"
                       ></v-select>
                     </v-col>
@@ -98,12 +98,14 @@ export default {
       sortDesc: [false],
     },
     items: [],
+    search: '',
     total: 0,
     selectionItems: {
       label: ['前処理', '特徴量エンジニアリング', 'モデリング'],
     },
     model: {
       'title': '',
+      label: null,
     },
   }),
   watch: {
