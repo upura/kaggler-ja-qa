@@ -8,6 +8,26 @@
               <v-app-bar color="primary" dark>
                 <v-toolbar-title>kaggler-ja QA</v-toolbar-title>
               </v-app-bar>
+              <v-dialog v-model="dialog">
+                <v-card>
+                  <v-card-title>
+                    <span class="title font-weight-light">QUESTION</span>
+                  </v-card-title>
+                  <v-card-text headline font-weight-bold>
+                    {{ editedItem.q_text }}
+                  </v-card-text>
+                  <v-card-title>
+                    <span class="title font-weight-light">ANSWER</span>
+                  </v-card-title>
+                  <v-card-text>
+                    {{ editedItem.a_text }}
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="close">Close</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
               <v-form ref="listForm" lazy-validation>
                 <v-container fluid class="pa-1">
                   <v-row class="px-2">
@@ -53,7 +73,7 @@
                     {{ item.label }}
                   </template>
                   <template v-slot:item.detail="{ item }">
-                    <v-btn small v-model="item.detail" color="primary">詳細</v-btn>
+                    <v-btn small class="mr-2" color="primary" @click="editItem(item)">詳細</v-btn>
                   </template>
                 </v-data-table>
               </v-form>
@@ -79,16 +99,42 @@ export default {
     search: '',
     sortBy: 'q_posted_at',
     sortDesc: true,
+    dialog: false,
+    editedIndex: -1,
+    editedItem: {
+      q_text: '',
+      q_posted_at: '',
+      label: '',
+      a_posted_at: '',
+    },
   }),
+
+  watch: {
+    dialog (val) {
+      val || this.close()
+    },
+  },
+
   methods: {
     async loadList() {
       try {
         const res = await this.$axios.get('/api/qa/')
         this.items = res.data.results
-        console.log(res.data.results)
       } catch (error) {
         alert('情報を取得できませんでした。時間をおいてやり直してください。')
       }
+    },
+    editItem (item) {
+      this.editedIndex = this.items.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialog = true
+    },
+    close () {
+      this.dialog = false
+      setTimeout(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      }, 300)
     },
   },
   mounted() {
