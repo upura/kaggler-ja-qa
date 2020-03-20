@@ -52,6 +52,9 @@
                   <template v-slot:item.label="{ item }">
                     {{ item.label }}
                   </template>
+                  <template v-slot:item.detail="{ item }">
+                    <v-btn small v-model="item.detail" color="primary">詳細</v-btn>
+                  </template>
                 </v-data-table>
               </v-form>
             </v-card>
@@ -70,6 +73,7 @@ export default {
       { text: '質問文', align: 'left', sortable: false, value: 'q_text' },
       { text: '質問日時', align: 'left', sortable: true, value: 'q_posted_at' },
       { text: '種別', align: 'left', sortable: false, value: 'label' },
+      { text: '詳細', align: 'left', sortable: false, value: 'detail' },
     ],
     items: [],
     search: '',
@@ -81,6 +85,7 @@ export default {
       try {
         const res = await this.$axios.get('/api/qa/')
         this.items = res.data.results
+        console.log(res.data.results)
       } catch (error) {
         alert('情報を取得できませんでした。時間をおいてやり直してください。')
       }
