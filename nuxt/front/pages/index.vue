@@ -8,8 +8,8 @@
               <v-app-bar color="primary" dark>
                 <v-toolbar-title>kaggler-ja QA</v-toolbar-title>
               </v-app-bar>
-              <v-dialog v-model="dialog">
-                <v-card>
+              <v-dialog v-model="dialog" max-width="700px">
+                <v-card color="primary" dark>
                   <v-card-title>
                     <span class="title font-weight-light">QUESTION</span>
                   </v-card-title>
@@ -24,7 +24,7 @@
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="close">Close</v-btn>
+                    <v-btn text @click="close">Close</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
