@@ -14,13 +14,20 @@ class QuestionAnswer(models.Model):
         return "{}: {}".format(self.pk, self.q_text)
     __str__ = __repr__
 
+    LABEL_EDA = '探索的データ分析'
     LABEL_PROPROCESS = '前処理'
     LABEL_FEATURE_ENGINEERING = '特徴量エンジニアリング'
     LABEL_MODELING = 'モデリング'
+    LABEL_ENSEMBLE = 'アンサンブル'
+    LABEL_OTHERS = 'その他'
+
     LABELS_SET = (
+        (LABEL_EDA, '探索的データ分析'),
         (LABEL_PROPROCESS, '前処理'),
         (LABEL_FEATURE_ENGINEERING, '特徴量エンジニアリング'),
-        (LABEL_MODELING, 'モデリング')
+        (LABEL_MODELING, 'モデリング'),
+        (LABEL_ENSEMBLE, 'アンサンブル'),
+        (LABEL_OTHERS, 'その他'),
     )
     q_text = models.TextField()
     q_posted_at = models.DateTimeField()
