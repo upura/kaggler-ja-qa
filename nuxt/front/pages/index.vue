@@ -67,7 +67,7 @@
                     {{ item.q_text.slice(0, 90) + '......' }}
                   </template>
                   <template v-slot:item.q_posted_at="{ item }">
-                    {{ item.q_posted_at.replace('T', ' ').replace(/-/g, '/').slice(0, -4) }}
+                    {{ item.q_posted_at.replace('T', ' ').replace(/-/g, '/') }}
                   </template>
                   <template v-slot:item.label="{ item }">
                     {{ item.label }}
@@ -118,7 +118,7 @@ export default {
   methods: {
     async loadList() {
       try {
-        const res = await this.$axios.get('/api/qa/')
+        const res = await this.$axios.get('/api/qa/?limit=99999999')
         this.items = res.data.results
       } catch (error) {
         alert('情報を取得できませんでした。時間をおいてやり直してください。')
