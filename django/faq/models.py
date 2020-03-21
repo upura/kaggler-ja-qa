@@ -15,7 +15,6 @@ class QuestionAnswer(models.Model):
     __str__ = __repr__
 
     LABEL_EDA = '探索的データ分析'
-    LABEL_PROPROCESS = '前処理'
     LABEL_FEATURE_ENGINEERING = '特徴量エンジニアリング'
     LABEL_MODELING = 'モデリング'
     LABEL_VALIDATION = '検証'
@@ -24,7 +23,6 @@ class QuestionAnswer(models.Model):
 
     LABELS_SET = (
         (LABEL_EDA, '探索的データ分析'),
-        (LABEL_PROPROCESS, '前処理'),
         (LABEL_FEATURE_ENGINEERING, '特徴量エンジニアリング'),
         (LABEL_MODELING, 'モデリング'),
         (LABEL_VALIDATION, '検証'),
@@ -32,6 +30,6 @@ class QuestionAnswer(models.Model):
         (LABEL_OTHERS, 'その他'),
     )
     q_text = models.TextField()
-    q_posted_at = models.DateTimeField()
+    q_posted_at = models.DateField()
     a_text = models.TextField()
-    label = models.CharField(choices=LABELS_SET, default=LABEL_PROPROCESS, max_length=32)
+    label = models.CharField(choices=LABELS_SET, default=LABEL_OTHERS, max_length=32)
