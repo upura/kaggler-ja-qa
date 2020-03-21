@@ -18,6 +18,7 @@ class QuestionAnswer(models.Model):
     LABEL_PROPROCESS = '前処理'
     LABEL_FEATURE_ENGINEERING = '特徴量エンジニアリング'
     LABEL_MODELING = 'モデリング'
+    LABEL_VALIDATION = '検証'
     LABEL_ENSEMBLE = 'アンサンブル'
     LABEL_OTHERS = 'その他'
 
@@ -26,6 +27,7 @@ class QuestionAnswer(models.Model):
         (LABEL_PROPROCESS, '前処理'),
         (LABEL_FEATURE_ENGINEERING, '特徴量エンジニアリング'),
         (LABEL_MODELING, 'モデリング'),
+        (LABEL_VALIDATION, '検証'),
         (LABEL_ENSEMBLE, 'アンサンブル'),
         (LABEL_OTHERS, 'その他'),
     )
