@@ -1,0 +1,4 @@
+build:
+    docker:
+      django: Dockerfile.django
+      nuxt: Dockerfile.nuxt
