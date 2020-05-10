@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "@nuxtjs/vuetify": "^1.11.0",
-    "nuxt": "^2.0.0"
+    "nuxt": "^2.0.0",
+    "@babel/preset-env": "=7.9.0"
   },
   "devDependencies": {}
 }

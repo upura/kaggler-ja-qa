@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:12.16.2
 
 RUN mkdir -p /code
 
